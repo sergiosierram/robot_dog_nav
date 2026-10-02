@@ -96,7 +96,9 @@ ros2 run tf2_ros static_transform_publisher \
   --frame-id base_link --child-frame-id laser
 ```
 
-This says the lidar is 15 cm forward of the body centre, 30 cm up, and **rotated 180°**. The A3's cable side faces forward, so its own +x axis points backwards. These are the values the Lesson 3 mapping launch file uses.
+This says the lidar is 15 cm forward of the body centre, 30 cm up, and **rotated 180°**. These are the values the Lesson 3 mapping launch file uses.
+
+Why 180°? The RPLidar ROS driver points the scan's +x axis **towards the cable**. On our robot the cable faces **backwards**, so the lidar's +x points backwards, the opposite of `base_link`'s +x (forward). A 180° yaw lines the two up. The driver's frame diagram is in `~/demo_ws/src/rplidar_ros/rplidar_A2.png`. The A3 uses the same convention.
 
 > **Exercise (do this before Lesson 3):** measure the real position of the lidar's centre relative to the centre of the robot's body with a ruler. Do 0.15 m forward and 0.30 m up match? The localization launch file in Lesson 4 uses `x = 0.0`, so one of the two files is wrong. Write down your measurement. You will use it later.
 
