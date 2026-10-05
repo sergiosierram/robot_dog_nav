@@ -75,7 +75,7 @@ This launch file starts:
 |------|----------|-----------|
 | `sllidar_node` | Lesson 2, T1 | `/scan` |
 | `sportstate_to_odom` | Lesson 2, T2 | `/odom`, `odom → base_link` |
-| `base_link_to_laser_tf` | Lesson 2, T3, **but with `x = 0.0`** | `base_link → laser` |
+| `base_link_to_laser_tf` | Lesson 2, T3 | `base_link → laser` |
 | `map_server` | **new** | `/map` |
 | `amcl` | **new** | `/amcl_pose`, `/particle_cloud`, `map → odom` |
 | `lifecycle_manager_localization` | **new** | starts `map_server` and `amcl` |
@@ -92,7 +92,7 @@ The log should end with:
 
 The last warning repeats every two seconds until you complete Step 4. That is expected.
 
-> **Remember the lidar exercise from Lesson 2?** This launch file puts the lidar at `x = 0.0`. The mapping launch file put it at `x = 0.15`. Your map was built with 0.15. With 0.0, every scan is drawn 15 cm too far back. AMCL partly absorbs the error by shifting the robot's estimated pose, but the estimate is then off by up to 15 cm, and the error grows when the robot turns. Compare with your ruler measurement. Your instructor will tell you which value the class uses.
+> **The lidar transform must match the one used for mapping.** If you built the map with the lidar at one position and localize with it at another, every scan is shifted relative to the map. AMCL absorbs the shift by moving its estimate of the robot, so the robot ends up localized in the wrong place by that amount, and Nav2 inherits the error in Lesson 5.
 
 ## Step 2: Check it's running (T2)
 

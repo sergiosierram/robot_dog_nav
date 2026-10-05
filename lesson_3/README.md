@@ -66,7 +66,7 @@ This one launch file starts everything you started by hand in Lesson 2, plus SLA
 |------|-------------------|-----------|
 | `sllidar_node` | T1 | `/scan` |
 | `sportstate_to_odom` | T2 | `/odom`, `odom → base_link` |
-| `static_transform_publisher` | T3 (x=0.15, z=0.30, yaw=π) | `base_link → laser` |
+| `static_transform_publisher` | T3 (x=0.0, z=0.30, yaw=π) | `base_link → laser` |
 | `slam_toolbox` | **new** | `/map`, `map → odom` |
 
 You should see a line like `Using solver plugin solver_plugins::CeresSolver`. You may also see this warning, which is harmless:

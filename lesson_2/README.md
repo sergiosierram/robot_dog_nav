@@ -91,16 +91,18 @@ The source is `~/demo_ws/src/go2_state_bridge/go2_state_bridge/sportstate_to_odo
 
 ```bash
 ros2 run tf2_ros static_transform_publisher \
-  --x 0.15 --y 0.0 --z 0.30 \
+  --x 0.0 --y 0.0 --z 0.30 \
   --roll 0 --pitch 0 --yaw 3.141592653589793 \
   --frame-id base_link --child-frame-id laser
 ```
 
-This says the lidar is 15 cm forward of the body centre, 30 cm up, and **rotated 180°**. These are the values the Lesson 3 mapping launch file uses.
+This says the lidar sits directly above the body centre (`x = 0`, `y = 0`), 30 cm up, and **rotated 180°**. The mapping (Lesson 3) and localization (Lesson 4) launch files use the same values.
+
+The height `z` doesn't matter much for us: SLAM and Nav2 work in 2D and ignore it. It only changes how high the scan is drawn in RViz. The `x` and `y` values matter a lot, as the experiment in Step 7 shows.
 
 Why 180°? The RPLidar ROS driver points the scan's +x axis **towards the cable**. On our robot the cable faces **backwards**, so the lidar's +x points backwards, the opposite of `base_link`'s +x (forward). A 180° yaw lines the two up. The driver's frame diagram is in `~/demo_ws/src/rplidar_ros/rplidar_A2.png`. The A3 uses the same convention.
 
-> **Exercise (do this before Lesson 3):** measure the real position of the lidar's centre relative to the centre of the robot's body with a ruler. Do 0.15 m forward and 0.30 m up match? The localization launch file in Lesson 4 uses `x = 0.0`, so one of the two files is wrong. Write down your measurement. You will use it later.
+> **Exercise:** look at the robot from above and from the side. Check that the lidar's centre really is midway between the front and back legs, and midway between left and right. If the lidar were mounted 15 cm further forward, which number in the command would change, and to what?
 
 ## Step 5: Inspect the frame tree (T4)
 
@@ -110,7 +112,7 @@ ros2 topic echo /odom --once --field pose.pose   # near zero right after startin
 ros2 run tf2_ros tf2_echo odom laser             # the full chain, odom to laser
 ```
 
-`tf2_echo odom laser` prints `Translation: [0.150, 0.000, 0.300]` and a 180° yaw while the robot stands at its start point. The first line may say `frame does not exist`. That is normal: wait a second for the first transform to arrive.
+`tf2_echo odom laser` prints `Translation: [0.000, 0.000, 0.300]` and a 180° yaw while the robot stands at its start point. The first line may say `frame does not exist`. That is normal: wait a second for the first transform to arrive.
 
 Draw the tree as a PDF:
 
@@ -218,7 +220,7 @@ ros2 launch go2_slam_nav rplidar_a3.launch.py
 # T2  odometry  (odom -> base_link)
 ros2 run go2_state_bridge sportstate_to_odom
 # T3  lidar mount (base_link -> laser)
-ros2 run tf2_ros static_transform_publisher --x 0.15 --z 0.30 --yaw 3.141592653589793 --frame-id base_link --child-frame-id laser
+ros2 run tf2_ros static_transform_publisher --x 0.0 --z 0.30 --yaw 3.141592653589793 --frame-id base_link --child-frame-id laser
 # T4  inspect + view
 ros2 run tf2_ros tf2_echo odom laser
 rviz2          # Fixed Frame = odom; add TF, /scan, /odom
