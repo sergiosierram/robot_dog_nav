@@ -185,6 +185,8 @@ Sent sport mode command (api_id=1004).
 Bridge running: /cmd_vel -> /api/sport/request (max_x=0.5, max_y=0.3, max_z=1.0, deadman=0.5s)
 ```
 
+Once the robot is standing, switch it to **Classic Walk** mode: on the handheld remote, press **→ (right arrow) + START**. In any other mode the robot ignores the Move commands from `cmd_vel_node`. It stands, but doesn't walk.
+
 ## Step 5: Send a goal from RViz
 
 1. In the toolbar, click **Nav2 Goal**.
@@ -298,6 +300,7 @@ The speed caps in `cmd_vel_node` (0.5 m/s, 0.3 m/s, 1.0 rad/s) are a second safe
 | Symptom | Fix |
 |---------|-----|
 | The path appears in RViz but the robot doesn't move, and after 10 s the log says `Failed to make progress` | `cmd_vel_node` is not running (T4). Check with `ros2 node list`. Also check that the robot is standing. |
+| `cmd_vel_node` is running and the robot is standing, but it doesn't walk | The robot isn't in Classic Walk mode. Press **→ + START** on the remote (Step 4). |
 | `Control loop missed its desired rate of 10.0000Hz` | The Jetson is busy, for example when RViz is running on it. Harmless if it happens now and then. Close RViz if it is constant. |
 | `No goal checker was specified in parameter 'current_goal_checker'` | Harmless. There is only one goal checker, and Nav2 uses it. |
 | `ros2 action send_goal` hangs at `Canceling goal...` | Known issue on Humble. The goal was cancelled anyway. Press Ctrl+C again. |
@@ -322,7 +325,7 @@ rviz2 -d /opt/ros/humble/share/nav2_bringup/rviz/nav2_default_view.rviz
 # T3  Nav2
 ros2 launch go2_slam_nav go2_a3_nav2.launch.py
 
-# T4  velocity bridge (the robot stands up!)
+# T4  velocity bridge (the robot stands up!), then remote: → + START (Classic Walk)
 ros2 run mengram_pub cmd_vel_node
 
 # RViz: Nav2 Goal → click and drag.   Stop: Cancel / remote / Ctrl+C in T4

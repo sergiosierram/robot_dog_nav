@@ -190,6 +190,8 @@ ros2 run mengram_pub cmd_vel_node
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p speed:=0.2 -p turn:=0.5
 ```
 
+Once the robot is standing, switch it to **Classic Walk** mode: on the handheld remote, press **→ (right arrow) + START**. In any other mode the robot ignores the Move commands and doesn't walk.
+
 The teleop terminal must be the active window to read your keys. `i` moves forward, `,` moves back, `j`/`l` turn, and `k` stops. Hold Shift (`I`, `J`, `L`…) to step sideways. Because of the 0.5 s stop rule, the robot stops shortly after you release a key.
 
 Check the command flow:
@@ -210,7 +212,7 @@ ros2 topic echo /api/sport/request    # what the bridge forwards to the robot
 | RViz: `Could not transform from [laser] to [odom]` | The static transform is not running (T3). |
 | Odometry jumps back to (0, 0) | Someone restarted `sportstate_to_odom`. It resets the origin each time it starts. |
 | RViz flickers, or the robot jumps between two poses | Two people are running the same node. Run `ros2 node list` and look for duplicates. |
-| Teleop: the robot doesn't move | Is `cmd_vel_node` running? Is the robot standing? Is the teleop terminal the active window? |
+| Teleop: the robot doesn't move | Is `cmd_vel_node` running? Is the robot standing? Is it in Classic Walk mode (→ + START on the remote)? Is the teleop terminal the active window? |
 
 ## Summary
 
