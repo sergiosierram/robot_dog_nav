@@ -110,7 +110,11 @@ The launch file is at `~/demo_ws/src/unitree-go2-slam-nav2/go2_slam_nav/launch/r
 | `frame_id`        | `laser`        | TF frame the scan is published in          |
 | `scan_mode`       | `Sensitivity`  | A3 scan mode (16 kHz sample rate)          |
 
-You can override any launch argument, for example: `ros2 launch go2_slam_nav rplidar_a3.launch.py serial_port:=/dev/ttyUSB1`.
+You can override any launch argument. This matters for the serial port: if you unplug and re-plug the lidar, it can come back as `/dev/ttyUSB1` instead of `/dev/ttyUSB0`. Its name under `/dev/serial/by-id/` never changes, so use that:
+
+```bash
+ros2 launch go2_slam_nav rplidar_a3.launch.py serial_port:=$(ls /dev/serial/by-id/*CP2102*)
+```
 
 > **Only one lidar driver can run at a time.** The serial port can be opened by only one program. If someone else in your group has already started the lidar, do not start it again. Go straight to Step 5. Every terminal logged in to the robot sees the same topics.
 
